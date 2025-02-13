@@ -1,46 +1,71 @@
-import React, { useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-
-export default function LoveDiary() {
-  const [entries, setEntries] = useState([
-    { image: "", text: "" },
-  ]);
-  
-  const addEntry = () => {
-    setEntries([...entries, { image: "", text: "" }]);
-  };
-
-  const updateEntry = (index, field, value) => {
-    const newEntries = [...entries];
-    newEntries[index][field] = value;
-    setEntries(newEntries);
-  };
-
-  return (
-    <div className="p-4 max-w-2xl mx-auto">
-      <h1 className="text-2xl font-bold text-center mb-4">我們的愛情日記</h1>
-      {entries.map((entry, index) => (
-        <Card key={index} className="mb-4">
-          <CardContent className="p-4">
-            <Input
-              type="file"
-              accept="image/*"
-              onChange={(e) => updateEntry(index, "image", URL.createObjectURL(e.target.files[0]))}
-            />
-            {entry.image && <img src={entry.image} alt="Love Memory" className="mt-2 rounded-lg" />}
-            <Textarea
-              placeholder="寫下一句甜甜的情話..."
-              value={entry.text}
-              onChange={(e) => updateEntry(index, "text", e.target.value)}
-              className="mt-2"
-            />
-          </CardContent>
-        </Card>
-      ))}
-      <Button onClick={addEntry} className="w-full mt-4">新增記錄</Button>
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我們的回憶錄</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffe6e6;
+            color: #333;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+        }
+        .memory {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease-in-out;
+            margin-bottom: 40px;
+        }
+        .memory.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        img, video {
+            max-width: 100%;
+            border-radius: 10px;
+        }
+        .text {
+            font-size: 1.2em;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>我們的回憶錄</h1>
+        <div class="memory">
+            <img src="example.jpg" alt="我們的照片">
+            <p class="text">這是我們第一次約會的時候！</p>
+        </div>
+        <div class="memory">
+            <video controls>
+                <source src="example.mp4" type="video/mp4">
+                您的瀏覽器不支持影片播放。
+            </video>
+            <p class="text">這是我們一起去旅行的影片！</p>
+        </div>
     </div>
-  );
-}
+
+    <script>
+        document.addEventListener("scroll", function() {
+            let elements = document.querySelectorAll(".memory");
+            let windowHeight = window.innerHeight;
+            
+            elements.forEach(el => {
+                let position = el.getBoundingClientRect().top;
+                if (position < windowHeight - 50) {
+                    el.classList.add("show");
+                }
+            });
+        });
+    </script>
+</body>
+</html>
