@@ -1,0 +1,46 @@
+import React, { useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+
+export default function LoveDiary() {
+  const [entries, setEntries] = useState([
+    { image: "", text: "" },
+  ]);
+  
+  const addEntry = () => {
+    setEntries([...entries, { image: "", text: "" }]);
+  };
+
+  const updateEntry = (index, field, value) => {
+    const newEntries = [...entries];
+    newEntries[index][field] = value;
+    setEntries(newEntries);
+  };
+
+  return (
+    <div className="p-4 max-w-2xl mx-auto">
+      <h1 className="text-2xl font-bold text-center mb-4">我們的愛情日記</h1>
+      {entries.map((entry, index) => (
+        <Card key={index} className="mb-4">
+          <CardContent className="p-4">
+            <Input
+              type="file"
+              accept="image/*"
+              onChange={(e) => updateEntry(index, "image", URL.createObjectURL(e.target.files[0]))}
+            />
+            {entry.image && <img src={entry.image} alt="Love Memory" className="mt-2 rounded-lg" />}
+            <Textarea
+              placeholder="寫下一句甜甜的情話..."
+              value={entry.text}
+              onChange={(e) => updateEntry(index, "text", e.target.value)}
+              className="mt-2"
+            />
+          </CardContent>
+        </Card>
+      ))}
+      <Button onClick={addEntry} className="w-full mt-4">新增記錄</Button>
+    </div>
+  );
+}
